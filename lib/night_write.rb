@@ -1,63 +1,69 @@
-require 'pry'
-
 class NightWrite
-  def input(file = ARGV[0])
-    text = ''
-    input_file = File.open(file)
-    input_file.each do |line|
-      @message = text += line
-    end
-    return @message
-  end
-
-  def output(file = ARGV[1])
-    both = ['0', '0'].join
-    none = ['.', '.'].join
-    left = ['0', '.'].join
-    right = ['.', '0'].join
-
-    braille = File.open(file, 'w+')
-    braille.write("#{left} #{left} #{right} #{right}\n#{both} #{right} #{left} #{left}\n#{left} #{left} #{left} #{left}")
-    braille
-  end
-
   def translate
-    input
-    output
-    puts "Created 'braille.txt' containing #{output} characters"
+    @letters =  {"a"=>[['0', '.'].join,['.', '.'].join,['.', '.'].join],
+                "b"=>[['0', '.'].join,['0', '.'].join,['.', '.'].join],
+                "c"=>[['0', '0'].join,['.', '.'].join,['.', '.'].join],
+                "d"=>[['0', '0'].join,['.', '0'].join,['.', '.'].join],
+                "e"=>[['0', '.'].join,['.', '0'].join,['.', '.'].join],
+                "f"=>[['0', '0'].join,['0', '.'].join,['.', '.'].join],
+                "g"=>[['0', '0'].join,['0', '0'].join,['.', '.'].join],
+                "h"=>[['0', '.'].join,['0', '0'].join,['.', '.'].join],
+                "i"=>[['.', '0'].join,['0', '.'].join,['.', '.'].join],
+                "j"=>[['.', '0'].join,['0', '0'].join,['.', '.'].join],
+
+                "k"=>[['0', '.'].join,['.', '.'].join,['0', '.'].join],
+                "l"=>[['0', '.'].join,['0', '.'].join,['0', '.'].join],
+                "m"=>[['0', '0'].join,['.', '.'].join,['0', '.'].join],
+                "n"=>[['0', '0'].join,['.', '0'].join,['0', '.'].join],
+                "o"=>[['0', '.'].join,['.', '0'].join,['0', '.'].join],
+                "p"=>[['0', '0'].join,['0', '.'].join,['0', '.'].join],
+                "q"=>[['0', '0'].join,['0', '0'].join,['0', '.'].join],
+                "r"=>[['0', '.'].join,['0', '0'].join,['0', '.'].join],
+                "s"=>[['.', '0'].join,['0', '.'].join,['0', '.'].join],
+                "t"=>[['.', '0'].join,['0', '0'].join,['0', '.'].join],
+
+                "u"=>[['0', '.'].join,['.', '.'].join,['0', '0'].join],
+                "v"=>[['0', '.'].join,['0', '.'].join,['0', '0'].join],
+                "w"=>[['.', '0'].join,['0', '0'].join,['.', '0'].join],
+                "x"=>[['0', '0'].join,['.', '.'].join,['0', '0'].join],
+                "y"=>[['0', '0'].join,['.', '0'].join,['0', '0'].join],
+                "z"=>[['0', '.'].join,['.', '0'].join,['0', '0'].join]}
+  end
+
+  def write_first_line(index = 0)
+    translate
+    @letters.values_at("a")[0][index]
+  end
+
+  def write_second_line(index = 1)
+    translate
+    @letters.values_at("a")[0][index]
+  end
+
+  def write_third_line(index = 2)
+    translate
+    @letters.values_at("a")[0][index]
+  end
+
+  actually_running = ($PROGRAM_NAME == __FILE__)
+
+  if actually_running
+    def input(input_file = ARGV[0])
+      text = ''
+      input_file = File.open(input_file)
+      input_file.each do |line|
+        @message = text += line
+      end
+      return @message
+    end
+
+    def output(output_file = ARGV[1])
+      braille = File.open(output_file, 'w+')
+      braille.write("#{write_first_line}\n#{write_second_line}\n#{write_third_line}")
+      print "Created 'braille.txt' containing #{braille.each_line.count} characters"
+      braille.close
+    end
+    write = NightWrite.new
+    write.output
   end
 end
-
-write = NightWrite.new
-write.translate
-
-# ross = "#{left}#{left}#{right}#{right}\n#{both}#{right}#{left}#{left}\n#{left}#{left}#{left}#{left}"
-
-a = "#{left}\n#{none}\n#{none}"
-b = "#{left}\n#{left}\n#{none}"
-c = "#{both}\n#{none}\n#{none}"
-d = "#{both}\n#{right}\n#{none}"
-e = "#{left}\n#{right}\n#{none}"
-f = "#{both}\n#{left}\n#{none}"
-g = "#{both}\n#{both}\n#{none}"
-h = "#{left}\n#{both}\n#{none}"
-i = "#{right}\n#{left}\n#{none}"
-j = "#{right}\n#{both}\n#{none}"
-
-k = "#{left}\n#{none}\n#{left}"
-l = "#{left}\n#{left}\n#{left}"
-m = "#{both}\n#{none}\n#{left}"
-n = "#{both}\n#{right}\n#{left}"
-o = "#{left}\n#{right}\n#{left}"
-pee = "#{both}\n#{left}\n#{left}"
-q = "#{both}\n#{both}\n#{left}"
-r = "#{left}\n#{both}\n#{left}"
-s = "#{right}\n#{left}\n#{left}"
-t = "#{right}\n#{both}\n#{left}"
-
-u = "#{left}\n#{none}\n#{both}"
-v = "#{left}\n#{left}\n#{both}"
-w = "#{right}\n#{both}\n#{right}"
-x = "#{both}\n#{none}\n#{both}"
-y = "#{both}\n#{right}\n#{both}"
-z = "#{left}\n#{right}\n#{both}"
