@@ -7,49 +7,13 @@ class NightWrite
   end
 
   def parse_message
-    @text = input.split.join.chars
+    @text = input.split("")
   end
-
-  def open_file
-    braille = File.open('Users/rossedfort/code/night_writer/braille.txt', 'w+')
-  end
-
-  def write_top_line(index = 0)
+  
+  def convert_to_braille(braille_line)
     parse_message
-    top_braille = []
     @letters = get_braille
-    until index == @text.size
-      top_braille << @letters[@text[index]][0].join
-      index+=1
-    end
-    top_braille.join
-  end
-
-  def write_mid_line(index = 0)
-    parse_message
-    mid_braille = []
-    @letters = get_braille
-    until index == @text.size
-      mid_braille << @letters[@text[index]][1].join
-      index+=1
-    end
-    mid_braille.join
-  end
-
-  def write_bot_line(index = 0)
-    parse_message
-    bot_braille = []
-    @letters = get_braille
-    until index == @text.size
-      bot_braille << @letters[@text[index]][2].join
-      index+=1
-    end
-    bot_braille.join
-  end
-
-  def write_lines
-    braille = open_file
-    braille.write("#{write_top_line}\n#{write_mid_line}\n#{write_bot_line}")
+    @text.map {|e| @letters.fetch(e)[braille_line]}.flatten.join
   end
 
   actually_running = ($PROGRAM_NAME == __FILE__)
@@ -57,7 +21,7 @@ class NightWrite
   if actually_running
     def input(input_file = ARGV[0])
       text = ''
-      file = File.open('Users/rossedfort/code/night_writer/message.txt')
+      file = File.open(input_file)
       file.each do |line|
         @message = text += line
       end
@@ -65,9 +29,16 @@ class NightWrite
     end
 
     def output(output_file = ARGV[1])
-      print "Created 'braille.txt' containing #{} characters"
+      braille = File.open(output_file, 'w+')
+      line_zero = convert_to_braille(0)
+      line_one = convert_to_braille(1)
+      line_two = convert_to_braille(2)
+      block = [line_zero, line_one, line_two].join("\n")
+      braille.write("#{line_zero}\n#{line_one}\n#{line_two}")
+      block
+      puts "Created 'braille.txt' containing #{braille.chars} characters"
     end
   end
 end
 
-write = NightWrite.new.write_lines
+NightWrite.new.output

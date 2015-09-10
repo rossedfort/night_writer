@@ -43,3 +43,37 @@ text[index]  # => "r"
 text[1]      # => "o"
 text[2]      # => "s"
 text[3]      # => "s"
+
+
+# def write_top_line(index = 0)
+#   parse_message
+#   top_braille = []
+#   @letters = get_braille
+#   until index == @text.size
+#     top_braille << @letters[@text[index]][0].join
+#     index+=1
+#   end
+#   top_braille.join
+# end
+#
+# def write_mid_line(index = 0)
+#   parse_message
+#   mid_braille = []
+#   @letters = get_braille
+#   until index == @text.size
+#     mid_braille << @letters[@text[index]][1].join
+#     index+=1
+#   end
+#   mid_braille.join
+# end
+#
+# def write_bot_line(index = 0)
+#   parse_message
+#   bot_braille = []
+#   @letters = get_braille
+#   until index == @text.size
+#     bot_braille << @letters[@text[index]][2].join
+#     index+=1
+#   end
+#   bot_braille.join
+# end
