@@ -19,4 +19,9 @@ class NightWriteTests < Minitest::Test
     night = NightWrite.new
     assert_equal "..", night.write_third_line
   end
+
+  def test_parse_message_returns_an_array_of_single_characters
+    night = NightWrite.new
+    assert_equal ['a', 'b', 'c'], night.parse_message('abc')
+  end
 end

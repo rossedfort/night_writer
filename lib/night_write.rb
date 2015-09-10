@@ -1,48 +1,55 @@
+require_relative 'translator'
+
 class NightWrite
-  def translate
-    @letters =  {"a"=>[['0', '.'].join,['.', '.'].join,['.', '.'].join],
-                "b"=>[['0', '.'].join,['0', '.'].join,['.', '.'].join],
-                "c"=>[['0', '0'].join,['.', '.'].join,['.', '.'].join],
-                "d"=>[['0', '0'].join,['.', '0'].join,['.', '.'].join],
-                "e"=>[['0', '.'].join,['.', '0'].join,['.', '.'].join],
-                "f"=>[['0', '0'].join,['0', '.'].join,['.', '.'].join],
-                "g"=>[['0', '0'].join,['0', '0'].join,['.', '.'].join],
-                "h"=>[['0', '.'].join,['0', '0'].join,['.', '.'].join],
-                "i"=>[['.', '0'].join,['0', '.'].join,['.', '.'].join],
-                "j"=>[['.', '0'].join,['0', '0'].join,['.', '.'].join],
 
-                "k"=>[['0', '.'].join,['.', '.'].join,['0', '.'].join],
-                "l"=>[['0', '.'].join,['0', '.'].join,['0', '.'].join],
-                "m"=>[['0', '0'].join,['.', '.'].join,['0', '.'].join],
-                "n"=>[['0', '0'].join,['.', '0'].join,['0', '.'].join],
-                "o"=>[['0', '.'].join,['.', '0'].join,['0', '.'].join],
-                "p"=>[['0', '0'].join,['0', '.'].join,['0', '.'].join],
-                "q"=>[['0', '0'].join,['0', '0'].join,['0', '.'].join],
-                "r"=>[['0', '.'].join,['0', '0'].join,['0', '.'].join],
-                "s"=>[['.', '0'].join,['0', '.'].join,['0', '.'].join],
-                "t"=>[['.', '0'].join,['0', '0'].join,['0', '.'].join],
-
-                "u"=>[['0', '.'].join,['.', '.'].join,['0', '0'].join],
-                "v"=>[['0', '.'].join,['0', '.'].join,['0', '0'].join],
-                "w"=>[['.', '0'].join,['0', '0'].join,['.', '0'].join],
-                "x"=>[['0', '0'].join,['.', '.'].join,['0', '0'].join],
-                "y"=>[['0', '0'].join,['.', '0'].join,['0', '0'].join],
-                "z"=>[['0', '.'].join,['.', '0'].join,['0', '0'].join]}
+  def get_braille
+    Translator.new.translate
   end
 
-  def write_first_line(index = 0)
-    translate
-    @letters.values_at("a")[0][index]
+  def parse_message
+    @text = input.split.join.chars
   end
 
-  def write_second_line(index = 1)
-    translate
-    @letters.values_at("a")[0][index]
+  def open_file
+    braille = File.open('Users/rossedfort/code/night_writer/braille.txt', 'w+')
   end
 
-  def write_third_line(index = 2)
-    translate
-    @letters.values_at("a")[0][index]
+  def write_top_line(index = 0)
+    parse_message
+    top_braille = []
+    @letters = get_braille
+    until index == @text.size
+      top_braille << @letters[@text[index]][0].join
+      index+=1
+    end
+    top_braille.join
+  end
+
+  def write_mid_line(index = 0)
+    parse_message
+    mid_braille = []
+    @letters = get_braille
+    until index == @text.size
+      mid_braille << @letters[@text[index]][1].join
+      index+=1
+    end
+    mid_braille.join
+  end
+
+  def write_bot_line(index = 0)
+    parse_message
+    bot_braille = []
+    @letters = get_braille
+    until index == @text.size
+      bot_braille << @letters[@text[index]][2].join
+      index+=1
+    end
+    bot_braille.join
+  end
+
+  def write_lines
+    braille = open_file
+    braille.write("#{write_top_line}\n#{write_mid_line}\n#{write_bot_line}")
   end
 
   actually_running = ($PROGRAM_NAME == __FILE__)
@@ -50,20 +57,17 @@ class NightWrite
   if actually_running
     def input(input_file = ARGV[0])
       text = ''
-      input_file = File.open(input_file)
-      input_file.each do |line|
+      file = File.open('Users/rossedfort/code/night_writer/message.txt')
+      file.each do |line|
         @message = text += line
       end
-      return @message
+      return @message.strip
     end
 
     def output(output_file = ARGV[1])
-      braille = File.open(output_file, 'w+')
-      braille.write("#{write_first_line}\n#{write_second_line}\n#{write_third_line}")
-      print "Created 'braille.txt' containing #{braille.each_line.count} characters"
-      braille.close
+      print "Created 'braille.txt' containing #{} characters"
     end
-    write = NightWrite.new
-    write.output
   end
 end
+
+write = NightWrite.new.write_lines
