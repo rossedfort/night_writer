@@ -9,7 +9,7 @@ class NightWrite
   def parse_message
     @text = input.split("")
   end
-  
+
   def convert_to_braille(braille_line)
     parse_message
     @letters = get_braille
@@ -21,7 +21,7 @@ class NightWrite
   if actually_running
     def input(input_file = ARGV[0])
       text = ''
-      file = File.open(input_file)
+      file = File.open('Users/rossedfort/code/night_writer/message.txt')
       file.each do |line|
         @message = text += line
       end
@@ -29,7 +29,7 @@ class NightWrite
     end
 
     def output(output_file = ARGV[1])
-      braille = File.open(output_file, 'w+')
+      braille = File.open('Users/rossedfort/code/night_writer/braille.txt', 'w+')
       line_zero = convert_to_braille(0)
       line_one = convert_to_braille(1)
       line_two = convert_to_braille(2)
