@@ -24,21 +24,30 @@ class NightRead
     second_line = input[1].each_slice(2) { |a| @formatted_second << a}
     third_line = input[2].each_slice(2) { |a| @formatted_third << a}
 
-    @formatted_first
-    @formatted_second
-    @formatted_third
+    @transposed = []
+    @transposed << @formatted_first
+    @transposed << @formatted_second
+    @transposed << @formatted_third
+    @transposed.transpose
   end
 
-  def convert_to_text(braille_line)
-    format_brail
+  def convert_to_text
     @letters = get_braille
-    @text.map {|e| @letters.fetch(e)[braille_line]}.flatten.join
+    array = format_braille
+    index = 0
+    @final_string = []
+    while index <= array.count
+      @final_string << @letters.key(array[index])
+      index += 1
+    end
+    @final_string.compact.join('')
   end
 
   def output
-    file = File.open('Users/rossedfort/code/night_writer/message.txt')
+    file = File.open('Users/rossedfort/code/night_writer/output_message.txt', 'w')
+    file.write("#{convert_to_text}")
   end
 end
 
 read = NightRead.new
-read.format_braille
+read.output
