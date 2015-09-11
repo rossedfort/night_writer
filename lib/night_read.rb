@@ -33,24 +33,23 @@ class NightRead
     end
     @final_string.compact.join('')
   end
+end
 
-  actually_running = ($PROGRAM_NAME == __FILE__)
-
-  if actually_running
-    def input(input_file = ARGV[0])
-      file = File.open(input_file)
-      array = []
-      file.each_line do |line|
-        array << line.chomp.split('')
-      end
-      array
+if $PROGRAM_NAME == __FILE__
+  public
+  def input(input_file = ARGV[0])
+    file = File.open(input_file)
+    array = []
+    file.each_line do |line|
+      array << line.chomp.split('')
     end
+    array
+  end
 
-    def output(output_file = ARGV[1])
-      file = File.open(output_file, 'w')
-      file.write("#{convert_to_text}")
-      puts "Created 'braille.txt' containing #{} characters"
-    end
+  def output(output_file = ARGV[1])
+    file = File.open(output_file, 'w')
+    file.write("#{convert_to_text}")
+    puts "Created 'braille.txt' containing #{} characters"
   end
 end
 
