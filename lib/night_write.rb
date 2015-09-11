@@ -21,7 +21,7 @@ class NightWrite
   if actually_running
     def input(input_file = ARGV[0])
       text = ''
-      file = File.open('Users/rossedfort/code/night_writer/message.txt')
+      file = File.open(input_file)
       file.each do |line|
         @message = text += line
       end
@@ -29,14 +29,14 @@ class NightWrite
     end
 
     def output(output_file = ARGV[1])
-      braille = File.open('Users/rossedfort/code/night_writer/braille.txt', 'w+')
+      file = File.open(output_file, 'w+')
       line_zero = convert_to_braille(0)
       line_one = convert_to_braille(1)
       line_two = convert_to_braille(2)
       block = [line_zero, line_one, line_two].join("\n")
-      braille.write("#{line_zero}\n#{line_one}\n#{line_two}")
+      file.write("#{line_zero}\n#{line_one}\n#{line_two}")
       block
-      puts "Created 'braille.txt' containing #{braille.chars} characters"
+      puts "Created 'braille.txt' containing #{} characters"
     end
   end
 end

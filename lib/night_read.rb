@@ -9,20 +9,11 @@ class NightRead
     @text = input
   end
 
-  def input
-    file = File.open('Users/rossedfort/code/night_writer/braille.txt')
-    array = []
-    file.each_line do |line|
-      array << line.chomp.split("")
-    end
-    array
-  end
-
   def format_braille(index = 0)
     @formatted_first, @formatted_second, @formatted_third = [], [], []
-    first_line = input[0].each_slice(2) { |a| @formatted_first << a}
-    second_line = input[1].each_slice(2) { |a| @formatted_second << a}
-    third_line = input[2].each_slice(2) { |a| @formatted_third << a}
+    input[0].each_slice(2) { |a| @formatted_first << a}
+    input[1].each_slice(2) { |a| @formatted_second << a}
+    input[2].each_slice(2) { |a| @formatted_third << a}
 
     @transposed = []
     @transposed << @formatted_first
@@ -43,9 +34,23 @@ class NightRead
     @final_string.compact.join('')
   end
 
-  def output
-    file = File.open('Users/rossedfort/code/night_writer/output_message.txt', 'w')
-    file.write("#{convert_to_text}")
+  actually_running = ($PROGRAM_NAME == __FILE__)
+
+  if actually_running
+    def input(input_file = ARGV[0])
+      file = File.open(input_file)
+      array = []
+      file.each_line do |line|
+        array << line.chomp.split('')
+      end
+      array
+    end
+
+    def output(output_file = ARGV[1])
+      file = File.open(output_file, 'w')
+      file.write("#{convert_to_text}")
+      puts "Created 'braille.txt' containing #{} characters"
+    end
   end
 end
 
