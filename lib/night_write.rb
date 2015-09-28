@@ -1,5 +1,4 @@
 require_relative 'translator'
-require 'pry'
 
 class NightWrite
   attr_reader :message
@@ -14,7 +13,7 @@ class NightWrite
   end
 
   def write(message)
-    @text = message.split("") # => ["h", "e", "l", "l", "o"]
+    @text = message.split("")
 
     line_zero = convert_to_braille(0)
     line_one = convert_to_braille(1)
